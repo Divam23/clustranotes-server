@@ -1,0 +1,1 @@
+i am this point where i can just start write the code because eventually i can fix it up later so start the server write some logic and get it working
