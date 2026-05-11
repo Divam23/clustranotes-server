@@ -211,6 +211,17 @@ const UserSchema = new Schema(
         default: 0,
         min: 0,
       },
+      followersCount:{
+        type:Number,
+        default:0,
+        min:0
+      },
+      followingCount:{
+        type:Number,
+        default:0,
+        min:0
+      },
+
     },
 
     // Moderation
