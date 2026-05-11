@@ -5,7 +5,7 @@ node_modules/
 .pnp.*
 
 # Node / TypeScript build output
-dist/
+**/dist/
 build/
 coverage/
 *.tsbuildinfo
@@ -49,6 +49,7 @@ firebase-adminsdk*.json
 **/android/app/google-services.json
 **/ios/Runner/GoogleService-Info.plist
 **/macos/Runner/GoogleService-Info.plist
+server/src/firebase/*.json
 firebase-debug.log
 firestore-debug.log
 ui-debug.log

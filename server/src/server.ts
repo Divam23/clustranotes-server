@@ -1,1 +1,20 @@
-i am this point where i can just start write the code because eventually i can fix it up later so start the server write some logic and get it working
+import {Request, Response} from "express"
+import {app} from "./app";
+import { configDotenv } from "dotenv";
+import { connectDB } from "./config/db.config";
+
+configDotenv();
+
+const PORT =process.env.PORT;
+
+connectDB().then(
+    ()=>{
+        app.listen(PORT || 1500, ()=>{
+            console.log(`Server is running on http://localhost:${PORT}`)
+        } )
+    }
+).catch(
+    (error)=>{
+        console.log("Mongo DB Connection failed---", error)
+    }
+)
