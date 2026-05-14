@@ -1,15 +1,15 @@
-import { NoteCategoryType } from "../notes.model";
+import { NoteCategoryType } from "../constants/noteCategory.constant";
+
 
 export interface CreateNoteDto{
     title: string,
     description?:string,
     subject: string,
     category: NoteCategoryType,
-    tags:string[],
+    tags?:string[],
     course: string,
-    university:string,
-    semester:number ,
+    university?:string,
+    semester:number,
     language?:string,
     isPublic:boolean,
-
 }

@@ -1,47 +1,8 @@
 import mongoose, { Schema, Document } from 'mongoose';
-
-export const NOTE_CATEGORY_ENUM = [
-  'lecture_notes',
-  'previous_year_paper',
-  'summaries',
-  'assignments',
-  'lab_manual',
-  'others',
-] as const;
-
-export const NOTE_CONTENT_TYPE_ENUM = [
-  'pdf',
-  'docx',
-  'txt',
-  'pptx',
-  'image',
-] as const;
-
-export const NOTE_STATUS_ENUM = [
-  'published',
-  'draft',
-  'pending_review',
-  'rejected',
-] as const;
-
-export const MODERATION_FLAGS_ENUM = [
-  'spam',
-  'inappropriate',
-  'copyright',
-  'low_quality',
-] as const;
-
-export type NoteCategoryType =
-  typeof NOTE_CATEGORY_ENUM[number];
-
-type NoteContentType =
-  typeof NOTE_CONTENT_TYPE_ENUM[number];
-
-type NoteStatusType =
-  typeof NOTE_STATUS_ENUM[number];
-
-type NoteModerationFlagsType =
-  typeof MODERATION_FLAGS_ENUM[number];
+import { NOTE_CATEGORY_ENUM, NoteCategoryType } from './constants/noteCategory.constant';
+import { NOTE_CONTENT_TYPE_ENUM, NoteContentType } from './constants/noteContentType.constant';
+import { NOTE_STATUS_ENUM, NoteStatusType } from './constants/noteStatus.constant';
+import { MODERATION_FLAGS_ENUM, NoteModerationFlagsType } from './constants/noteModerationFlags.constant';
 
 interface INote extends Document {
   title: string;

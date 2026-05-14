@@ -1,11 +1,11 @@
 import { Router } from 'express';
-import { userProfileUpdateValidationSchema } from './users.validation';
+import { userProfileUpdateValidationSchema } from './validators/profileUpdate.validation';
 import { verifyFirebaseToken } from '@/shared/middlewares/verifyFirebaseToken.middleware';
 import {
   getCurrentUserPersonalProfile,
   getCurrentUserPublicProfile,
   updateCurrentUserProfile,
-} from './users.controller';
+} from './controllers/users.controller';
 import { validate } from '@/shared/middlewares/validate.middleware';
 
 const router = Router();

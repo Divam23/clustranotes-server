@@ -1,52 +1,7 @@
-
-import mongoose, { Schema, Document } from 'mongoose';
-
-export const ROLE_ENUM = [
-  'student',
-  'teacher',
-  'lecturer',
-  'teaching_assistant',
-  'postgraduate_student',
-  'alumni',
-  'guest',
-] as const;
-
-export const VERIFICATION_ENUM = [
-  'not_verified',
-  'verified',
-  'under_verification',
-  'verification_failed'
-]
-
-
-type RoleType = typeof ROLE_ENUM[number];
-
-type VerificationType = typeof VERIFICATION_ENUM[number];
-
-interface IUser extends Document {
-  firebaseUid: string;
-  email: string;
-  firstName: string;
-  lastName?: string;
-  userName?: string;
-  avatar?: string;
-  bio?: string;
-  college?: string;
-  course?: string;
-  subject?: string[];
-  university?: string;
-  semester?: number;
-  isVerified: VerificationType[];
-  roles: RoleType[];
-  preferences?: any;
-  stats?: any;
-  moderation?: {
-    isBanned: boolean;
-    banReason?: string;
-    banUntil?: Date | null;
-  };
-  lastLoginAt?: Date;
-}
+import mongoose, { Schema } from 'mongoose';
+import { VERIFICATION_ENUM } from './constants/userVerification.constant';
+import { IUser } from './types/user.types';
+import { ROLE_ENUM } from './constants/userRole.constant';
 
 const UserSchema = new Schema(
   {
@@ -249,6 +204,9 @@ const UserSchema = new Schema(
     // Activity
     lastLoginAt: {
       type: Date,
+    },
+    lastUpdatedAt:{
+      type:Date
     },
   },
   {
