@@ -18,7 +18,7 @@ export const createNote = async ({
 }) => {
   const user = await User.findOne({
     firebaseUid,
-  });
+  }).lean();
 
   if (!user) {
     throw new ApiError(404, 'User not found');
@@ -32,7 +32,7 @@ export const createNote = async ({
     throw new ApiError(400, "Unsupported file type")
   }
 
-  const path = generateFilePath(user.id, uploadedFile.originalname);
+  const path = generateFilePath(user._id.toString(), uploadedFile.originalname);
 
   const fileUrl = await firebaseStorageProvider.uploadFile(
     uploadedFile.buffer,
@@ -44,6 +44,7 @@ export const createNote = async ({
    ...noteData,
    file: {
       url: fileUrl,
+      storagPath: path,
       mimeType: uploadedFile.mimetype,
       size: uploadedFile.size
    },
