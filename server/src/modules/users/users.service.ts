@@ -1,6 +1,5 @@
 import { ApiError } from '@/shared/utils/ApiError';
 import User from './users.model';
-import { getCurrentUser } from '../auth/auth.service';
 
 export const getPersonalProfile = async (firebaseUid: string) => {
   const user = await User.findOne(

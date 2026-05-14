@@ -1,0 +1,15 @@
+import { ApiError } from '@/shared/utils/ApiError';
+import { mimeMap } from './mimeMap';
+
+//100MB
+const MAX_FILE_SIZE = 10 * 1024 * 1024;
+
+export const validateFile = (mimeType: string, size: number) => {
+  if (!mimeMap[mimeType as keyof typeof mimeMap]) {
+    throw new ApiError(400, 'Invalid file type');
+  }
+
+  if (size > MAX_FILE_SIZE) {
+    throw new ApiError(400, 'File size exceeds limit');
+  }
+};

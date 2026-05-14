@@ -21,6 +21,8 @@ export const VERIFICATION_ENUM = [
 
 type RoleType = typeof ROLE_ENUM[number];
 
+type VerificationType = typeof VERIFICATION_ENUM[number];
+
 interface IUser extends Document {
   firebaseUid: string;
   email: string;
@@ -34,7 +36,7 @@ interface IUser extends Document {
   subject?: string[];
   university?: string;
   semester?: number;
-  isVerified: string;
+  isVerified: VerificationType[];
   roles: RoleType[];
   preferences?: any;
   stats?: any;
@@ -135,6 +137,7 @@ const UserSchema = new Schema(
       type: [String],
       enum: ROLE_ENUM, 
       default: ['student'],
+      requried:true,
       validate: {
         validator: function (v: string[]) {
           return Array.isArray(v) && v.length > 0;
@@ -143,9 +146,9 @@ const UserSchema = new Schema(
       },
     },
     isVerified:{
-      type:String,
+      type:[String],
       enum: VERIFICATION_ENUM,
-      default: "not_verified",
+      default: ['not_verified'],
       required:true,
       validate: {
         validator: function (v: string[]) {

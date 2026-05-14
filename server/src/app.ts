@@ -37,10 +37,12 @@ app.get('/health', (_, res) => {
 //routes import
 import authRoutes from "@/modules/auth/auth.routes";
 import userRoutes from "@/modules/users/users.routes"
+import noteRoutes from "@/modules/notes/notes.route"
 
 //routes setup
 app.use('/api/v1/auth/', authRoutes);
 app.use('api/v1/me/', userRoutes)
+app.use('api/v1/note', noteRoutes)
 
 //error middleware
 app.use(errorMiddleware);
