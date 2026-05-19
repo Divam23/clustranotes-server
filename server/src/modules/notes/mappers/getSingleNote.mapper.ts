@@ -1,0 +1,59 @@
+import { IUser } from '@/modules/users/types/user.types';
+import { INote } from '../types/note.types';
+
+export const mapSingleNoteResponse = ({
+    note,
+    isLiked,
+    isBookmarked,
+    isOwner,
+}: {
+    note: INote;
+    isLiked: boolean;
+    isBookmarked: boolean;
+    isOwner: boolean;
+}) => {
+    const uploader = note.uploader as unknown as IUser;
+
+    return {
+        id: note._id,
+        title: note.title,
+        description: note.description,
+        subject: note.subject,
+        category: note.category,
+        tags: note.tags,
+        course: note.course,
+        university: note.university,
+        semester: note.semester,
+        language: note.language,
+        contentType: note.contentType,
+        file: {
+            url: note.file.url,
+            size: note.file.size,
+            mimeType: note.file.mimeType,
+            pageCount: note.file.pageCount,
+            readingTime: note.file.readingTime,
+            thumbnailUrl: note.file.thumbnailUrl,
+        },
+        uploader: {
+            id: uploader._id,
+            firstName: uploader.firstName,
+            lastName: uploader.lastName,
+            userName: uploader.userName,
+            avatar: uploader.avatar,
+            isVerified: uploader.verificationStatus.values(),
+        },
+        stats: {
+            viewsCount: note.stats?.viewsCount || 0,
+            downloadCount: note.stats?.downloadCount || 0,
+            ratingsAverage: note.stats?.ratingsAverage || 0,
+            ratingsCount: note.stats?.ratingsCount || 0,
+            likesCount: note.likedBy?.length || 0,
+            bookmarksCount: note.bookmarkedBy?.length || 0,
+        },
+        isLiked,
+        isBookmarked,
+        isOwner,
+        createdAt:note.createdAt,
+        updatedAt:note.updateAt
+    };
+};
