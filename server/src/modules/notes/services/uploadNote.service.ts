@@ -1,11 +1,11 @@
 import { ApiError } from '@/shared/utils/ApiError';
-import Note from './notes.model';
-import User from '../users/users.model';
+import Note from '../notes.model';
+import User from '../../users/users.model';
 import { validateFile } from '@/infrastructure/storage/utils/validateFile';
 import { getNoteContentType } from '@/infrastructure/storage/utils/getNoteContentType';
 import { generateFilePath } from '@/infrastructure/storage/utils/filePathGenerator';
 import firebaseStorageProvider from '@/infrastructure/storage/providers/firebase.provider';
-import { CreateNoteDto } from './dto/createNote.dto';
+import { CreateNoteDto } from '../dto/createNote.dto';
 
 export const createNote = async ({
   firebaseUid,
@@ -50,7 +50,7 @@ export const createNote = async ({
    },
    contentType,
    uploader: user._id
-});
+  });
 
   return note;
 };

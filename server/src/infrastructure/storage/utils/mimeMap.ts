@@ -7,3 +7,10 @@ export const mimeMap = {
   'image/png': 'image',
 } as const;
 
+export const avatarMimeMap = {
+  'image/jpeg': 'image',
+  'image/png': 'image',
+  'image/jpg': 'image',
+  "image/heic": 'image',
+  "image/heif": 'image',
+};

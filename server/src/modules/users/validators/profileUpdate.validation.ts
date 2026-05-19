@@ -15,7 +15,6 @@ export const userProfileUpdateValidationSchema = z.object({
     .refine((s) => !/^\d+$/.test(s), 'Username cannot contain only numbers')
     .optional(),
 
-  avatar: z.url().optional(),
   bio: z.string().min(10).max(300).trim().optional(),
   college: z.string().trim().max(100).optional(),
   course: z.string().trim().max(100).optional(),

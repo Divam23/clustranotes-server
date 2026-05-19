@@ -3,12 +3,15 @@ import User from "../users.model";
 import { UpdateProfileDto } from "../dto/updateProfile.dto";
 
 export const updateUserProfile = async(firebaseUid:string, updateData:UpdateProfileDto)=>{
+    if(!updateData){
+        throw new ApiError(400, "No data found to be updated")
+    }
     const updatedUser = await User.findOneAndUpdate(
         {firebaseUid},
         updateData,
         {
             new: true,
-            validators:true
+            runValidators:true
         }
     ).lean()
 

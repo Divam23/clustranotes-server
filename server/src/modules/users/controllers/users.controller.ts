@@ -8,6 +8,7 @@ import { mapUpdateProfileResponse } from '../mappers/updateProfile.mapper';
 import { getPersonalProfile } from '../services/getPersonalProfile.service';
 import { getPublicProfile } from '../services/getPublicProfile.service';
 import { updateUserProfile } from '../services/updateUserProfile.service';
+import { updateProfileAvatar } from '../services/updateAvatar.service';
 
 export const getCurrentUserPersonalProfile = asyncHandler(async (req: Request, res: Response) => {
   if (!req.user) {
@@ -17,16 +18,34 @@ export const getCurrentUserPersonalProfile = asyncHandler(async (req: Request, r
   return res.status(200).json(new ApiResponse(200, mapPersonalProfileResponse(user)));
 });
 
-export const getCurrentUserPublicProfile = asyncHandler(async(req:Request, res:Response)=>{
+export const getCurrentUserPublicProfile = asyncHandler(async (req: Request, res: Response) => {
   if (!req.user) {
     throw new ApiError(401, 'Unauthorized');
   }
   const user = await getPublicProfile(req.user?.uid!);
   return res.status(200).json(new ApiResponse(200, mapPublicProfileResponse(user)));
-})
+});
 
-export const updateCurrentUserProfile = asyncHandler(async(req:Request,res:Response)=>{
-    const updatedUserProfile = await updateUserProfile(req.user!.uid,req.body)
+export const updateCurrentUserProfile = asyncHandler(async (req: Request, res: Response) => {
+  const updatedUserProfile = await updateUserProfile(req.user!.uid, req.body);
 
-    return res.status(200).json(new ApiResponse(200, mapUpdateProfileResponse(updatedUserProfile), "User details updated successfully"));
-})
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        mapUpdateProfileResponse(updatedUserProfile),
+        'User details updated successfully'
+      )
+    );
+});
+
+export const updateUserProfileAvatar = asyncHandler(async (req: Request, res: Response) => {
+  if (!req.file) {
+    throw new ApiError(400, 'Avatar file is required');
+  }
+
+  const updatedUserAvatar = await updateProfileAvatar(req.user!.uid, req.file);
+
+  return res.status(200).json(new ApiResponse(200, updatedUserAvatar, "Avatar uploaded successfully!"))
+});

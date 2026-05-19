@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { asyncHandler } from '@/shared/utils/asyncHandler';
 import { ApiResponse } from '@/shared/utils/ApiResponse';
-import * as noteService from '@/modules/notes/notes.service';
+import * as noteService from '@/modules/notes/services/uploadNote.service';
 import { ApiError } from '@/shared/utils/ApiError';
 
 export const uploadNote = asyncHandler(async (req: Request, res: Response) => {
