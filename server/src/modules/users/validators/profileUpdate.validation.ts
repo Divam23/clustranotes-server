@@ -9,9 +9,9 @@ export const userProfileUpdateValidationSchema = z.object({
     .string()
     .trim()
     .toLowerCase()
-    .min(5)
-    .max(30)
-    .regex(/^(?![._-])(?!.*[._-]{2})(?!.*[._-]$)[a-z0-9._-]{3,30}$/)
+    .min(5, "must be atleast 5 characters")
+    .max(30, "max 30 characters")
+    .regex(/^(?![._-])(?!.*[._-]{2})(?!.*[._-]$)[a-z0-9._-]{5,30}$/)
     .refine((s) => !/^\d+$/.test(s), 'Username cannot contain only numbers')
     .optional(),
 

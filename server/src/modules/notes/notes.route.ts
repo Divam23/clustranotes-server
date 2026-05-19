@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { uploadNote } from "./notes.controller";
+import { uploadNote } from "@/modules/notes/controllers/uploadNote.controller";
 import { validate } from "@/shared/middlewares/validate.middleware";
 import { verifyFirebaseToken } from "@/shared/middlewares/verifyFirebaseToken.middleware";
 import { noteUpload } from "@/shared/middlewares/multer.middleware";

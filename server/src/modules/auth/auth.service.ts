@@ -1,6 +1,7 @@
 import {DecodedIdToken} from "firebase-admin/auth"
 import User from "../users/users.model";
 import { fullNameToFirstNameAndLastName } from "@/shared/helpers/fullNameSplitter.helper";
+import { generateDefaultUserName } from "@/shared/helpers/generateDefaultUsername.helper";
 
 export const findOrCreateUser = async(decodedUser: DecodedIdToken)=>{
     let user = await User.findOne({
@@ -10,12 +11,24 @@ export const findOrCreateUser = async(decodedUser: DecodedIdToken)=>{
 
     if(!user){
         const {firstName, lastName} = fullNameToFirstNameAndLastName(decodedUser.name || "")
+        let generartedUsername = generateDefaultUserName(firstName);
+
+        let existingUsername = await User.findOne({userName: generartedUsername});
+
+        //check until unique username is found
+        while(existingUsername){
+            generartedUsername = generateDefaultUserName(firstName)
+
+            existingUsername = await User.findOne({userName: generartedUsername});
+
+        }
 
         user = await User.create({
             firebaseUid : decodedUser.uid,
             email:decodedUser.email,
             firstName:firstName,
             lastName:lastName,
+            userName:generartedUsername,
             avatar:decodedUser.picture
         })
     }
