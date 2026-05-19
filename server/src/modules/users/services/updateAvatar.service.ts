@@ -1,5 +1,5 @@
 import User from "../users.model";
-import { generateFilePath } from "@/infrastructure/storage/utils/filePathGenerator";
+import { generateAvatarFilePath } from "@/infrastructure/storage/utils/filePathGenerator";
 import { ApiError } from "@/shared/utils/ApiError";
 import firebaseStorageProvider from "@/infrastructure/storage/providers/firebase.provider";
 import { validateAvatarFile } from "@/infrastructure/storage/utils/validateAvatarFile";
@@ -16,7 +16,7 @@ export const updateProfileAvatar = async(firebaseUid: string, uploadedAvatarFile
 
     validateAvatarFile(uploadedAvatarFile.mimetype, uploadedAvatarFile.size);
 
-    const path = generateFilePath(user._id.toString(), uploadedAvatarFile.originalname);
+    const path = generateAvatarFilePath(user._id.toString(), uploadedAvatarFile.originalname);
 
     let avatarUrl = "";
     let oldAvatarUrl = user.avatar;

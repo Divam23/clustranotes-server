@@ -1,10 +1,10 @@
-import { mimeMap } from './mimeMap';
+import { fileMimeMap } from './mimeMap';
 
 export const getNoteContentType = (
   mimeType: string
 ) => {
 
-  return mimeMap[
-    mimeType as keyof typeof mimeMap
+  return fileMimeMap[
+    mimeType as keyof typeof fileMimeMap
   ] || null;
 };

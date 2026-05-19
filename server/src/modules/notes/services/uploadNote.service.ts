@@ -3,9 +3,10 @@ import Note from '../notes.model';
 import User from '../../users/users.model';
 import { validateFile } from '@/infrastructure/storage/utils/validateFile';
 import { getNoteContentType } from '@/infrastructure/storage/utils/getNoteContentType';
-import { generateFilePath } from '@/infrastructure/storage/utils/filePathGenerator';
+import { generateNoteFilePath } from '@/infrastructure/storage/utils/filePathGenerator';
 import firebaseStorageProvider from '@/infrastructure/storage/providers/firebase.provider';
 import { CreateNoteDto } from '../dto/createNote.dto';
+import { supportsThumbnailGeneration } from '@/shared/helpers/supportedFileTypeForThumbnail';
 
 export const createNote = async ({
   firebaseUid,
@@ -32,7 +33,9 @@ export const createNote = async ({
     throw new ApiError(400, "Unsupported file type")
   }
 
-  const path = generateFilePath(user._id.toString(), uploadedFile.originalname);
+
+
+  const path = generateNoteFilePath(user._id.toString(), uploadedFile.originalname);
 
   const fileUrl = await firebaseStorageProvider.uploadFile(
     uploadedFile.buffer,
