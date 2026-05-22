@@ -3,18 +3,22 @@ import { uploadNote } from "@/modules/notes/controllers/uploadNote.controller";
 import { validate } from "@/shared/middlewares/validate.middleware";
 import { verifyFirebaseToken } from "@/shared/middlewares/verifyFirebaseToken.middleware";
 import { noteUpload } from "@/shared/middlewares/multer.middleware";
-import { createNoteSchema } from "./validators/createNote.schema";
+import { createNoteSchema } from "./validators/createNote.validators";
 import { getSingleNoteController } from "./controllers/getSingleNote.controller";
 import { getNoteListController } from "./controllers/getListOfNotes.controller";
+import { deleteNoteSchema } from "./validators/deleteNote.validators";
+import { deleteSingleNoteController } from "./controllers/deleteSingleNote.controller";
+import { getNoteIdSchema } from "./validators/getNoteIdSchema.validator";
 
 const router = Router();
 
+//PUBLIC ROUTES
 router.route("/feed").get(getNoteListController)
 
+//PRIVATE ROUTES
 router.route("/create").post(verifyFirebaseToken, noteUpload.single("file"), validate(createNoteSchema), uploadNote);
-
-
-router.route("/:id").get(verifyFirebaseToken, getSingleNoteController)
+router.route("/:id").get(verifyFirebaseToken, validate(getNoteIdSchema), getSingleNoteController)
+router.route("/delete/:id").get(verifyFirebaseToken, validate(deleteNoteSchema), deleteSingleNoteController)
 
 
 export default router;

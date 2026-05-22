@@ -1,6 +1,6 @@
 import { ApiError } from '@/shared/utils/ApiError';
 import Note from '../notes.model';
-import User from '@/modules/users/users.model';
+import User from '@/modules/users/models/users.model';
 import mongoose from 'mongoose';
 
 export const getSingleNoteData = async (firebaseUid: string, noteId: string) => {

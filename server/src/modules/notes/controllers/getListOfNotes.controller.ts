@@ -1,7 +1,6 @@
 import { ApiResponse } from '@/shared/utils/ApiResponse';
 import { Request, Response } from 'express';
 import { getNoteList } from '../services/getListOfNotes.service';
-import { ApiError } from '@/shared/utils/ApiError';
 import { asyncHandler } from '@/shared/utils/asyncHandler';
 import { mapNoteListResponse } from '../mappers/getListOfNotes.mapper';
 
@@ -17,6 +16,6 @@ export const getNoteListController = asyncHandler(async (req: Request, res: Resp
     const notes = await getNoteList({ query, page, limit, subject, semester, category, course });
 
     const response = mapNoteListResponse(notes);
-    
+
     return res.status(200).json(new ApiResponse(200, response, 'Notes fetched successfully'));
 });

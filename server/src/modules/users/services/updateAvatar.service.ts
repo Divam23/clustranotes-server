@@ -1,4 +1,4 @@
-import User from "../users.model";
+import User from "../models/users.model";
 import { generateAvatarFilePath } from "@/infrastructure/storage/utils/filePathGenerator";
 import { ApiError } from "@/shared/utils/ApiError";
 import firebaseStorageProvider from "@/infrastructure/storage/providers/firebase.provider";
