@@ -1,5 +1,5 @@
 import {DecodedIdToken} from "firebase-admin/auth"
-import User from "../users/users.model";
+import User from "../users/models/users.model";
 import { fullNameToFirstNameAndLastName } from "@/shared/helpers/fullNameSplitter.helper";
 import { generateDefaultUserName } from "@/shared/helpers/generateDefaultUsername.helper";
 
