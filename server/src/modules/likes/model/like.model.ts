@@ -1,15 +1,25 @@
 import mongoose, { Schema } from 'mongoose';
+import { ILike } from '../types/like.types';
+import { ENTITY_TYPE_ENUM } from '../constants/entityType.constant';
 
-const LikeSchema = new Schema(
+const LikeSchema = new Schema<ILike>(
     {
         user: {
             type: mongoose.Types.ObjectId,
             ref: 'User',
             required: true,
         },
-        note: {
-            type: mongoose.Types.ObjectId,
-            ref: 'Note',
+        targetId: {
+            type: Schema.Types.ObjectId,
+
+            required: true,
+        },
+
+        targetType: {
+            type: String,
+
+            enum: ENTITY_TYPE_ENUM,
+
             required: true,
         },
     },
@@ -21,13 +31,14 @@ const LikeSchema = new Schema(
 LikeSchema.index(
     {
         user: 1,
-        note: 1,
+        targetId: 1,
+        targetType: 1,
     },
-    { 
-        unique: true 
+    {
+        unique: true,
     }
 );
 
-const Like = mongoose.model("Like", LikeSchema);
+const Like = mongoose.model('Like', LikeSchema);
 
 export default Like;

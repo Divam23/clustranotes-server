@@ -1,0 +1,30 @@
+import { asyncHandler } from '@/shared/utils/asyncHandler';
+import { Request, Response } from 'express';
+import { toggleLike } from '../services/toggleLike.service';
+import { ApiError } from '@/shared/utils/ApiError';
+import { ApiResponse } from '@/shared/utils/ApiResponse';
+import { EntityType } from '../constants/entityType.constant';
+
+export const toggleLikeController = asyncHandler(async (req: Request, res: Response) => {
+    if (!req.user) {
+        throw new ApiError(404, 'No user found');
+    }
+
+    const firebaseUid = req.user.uid;
+    const targetType = req.params.targetType as EntityType;
+    const targetId = req.params.targetId as string;
+
+    const response = await toggleLike(
+        firebaseUid,
+        targetType,
+        targetId
+    );
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            response,
+            'Like toggled successfully'
+        )
+    );
+});

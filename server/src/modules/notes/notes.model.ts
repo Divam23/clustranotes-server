@@ -136,21 +136,6 @@ const NoteSchema = new Schema<INote>(
             index: true,
         },
 
-        // Social interactions
-        likedBy: [
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'User',
-            },
-        ],
-
-        bookmarkedBy: [
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'User',
-            },
-        ],
-
         // Visibility & publishing
         isPublic: {
             type: Boolean,
@@ -178,6 +163,18 @@ const NoteSchema = new Schema<INote>(
             },
 
             downloadCount: {
+                type: Number,
+                default: 0,
+                min: 0,
+            },
+
+            likesCount: {
+                type: Number,
+                default: 0,
+                min: 0,
+            },
+
+            bookmarksCount: {
                 type: Number,
                 default: 0,
                 min: 0,
@@ -317,9 +314,9 @@ NoteSchema.methods.calculateEngagementScore = function () {
 
     const downloads = this.stats?.downloadCount || 0;
 
-    const likes = this.likedBy?.length || 0;
+    const likes = this.likedBy?.likesCount || 0;
 
-    const bookmarks = this.bookmarkedBy?.length || 0;
+    const bookmarks = this.bookmarkedBy?.bookmarksCount || 0;
 
     const ratings = this.stats?.ratingsAverage || 0;
 

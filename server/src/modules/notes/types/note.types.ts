@@ -56,6 +56,7 @@ export interface INote extends Document {
         viewsCount?: number;
         downloadCount?: number;
         sharesCount?: number;
+        likesCount?:number;
         ratingsAverage?: number;
         ratingsCount?: number;
         engagementScore?: number;
