@@ -71,7 +71,7 @@ export interface INote extends Document {
         moderatedAt?: Date;
     };
     createdAt: Date;
-    updateAt: Date;
+    updatedAt: Date;
 
     calculateEngagementScore(): number;
 

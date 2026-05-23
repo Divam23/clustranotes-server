@@ -21,11 +21,8 @@ export const getSingleNoteController = asyncHandler(
 
         const response = mapSingleNoteResponse({
             note: result.note,
-
             isLiked: result.isLiked,
-
             isBookmarked: result.isBookmarked,
-
             isOwner: result.isOwner,
         });
 

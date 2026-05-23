@@ -3,7 +3,7 @@ import Note from '../notes.model';
 import { ApiError } from '@/shared/utils/ApiError';
 import firebaseStorageProvider from '@/infrastructure/storage/providers/firebase.provider';
 import { validateThumbnailFile } from '@/infrastructure/storage/utils/validateThumbnailFile';
-import User from '@/modules/users/users.model';
+import User from '@/modules/users/models/users.model';
 import { getNoteContentType } from '@/infrastructure/storage/utils/getNoteContentType';
 
 

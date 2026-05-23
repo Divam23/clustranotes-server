@@ -1,7 +1,7 @@
 import { IUser } from '@/modules/users/types/user.types';
 import { INote } from '../types/note.types';
 
-export const mapSingleNoteResponse = ({
+export const mapUpdateNoteResponse = ({
     note,
     isLiked,
     isBookmarked,
