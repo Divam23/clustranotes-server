@@ -1,0 +1,30 @@
+import { asyncHandler } from '@/shared/utils/asyncHandler';
+import { Request, Response } from 'express';
+import { toggleBookmark } from '../services/toggleBookmark.service';
+import { ApiError } from '@/shared/utils/ApiError';
+import { ApiResponse } from '@/shared/utils/ApiResponse';
+import { BookmarkEntityType } from '../constants/bookmarkEntityType.constant';
+
+export const toggleBookmarkController = asyncHandler(async (req: Request, res: Response) => {
+    if (!req.user) {
+        throw new ApiError(404, 'No user found');
+    }
+
+    const firebaseUid = req.user.uid;
+    const targetType = req.params.targetType as BookmarkEntityType;
+    const targetId = req.params.targetId as string;
+
+    const response = await toggleBookmark(
+        firebaseUid,
+        targetType,
+        targetId
+    );
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            response,
+            'Bookmark toggled successfully'
+        )
+    );
+});

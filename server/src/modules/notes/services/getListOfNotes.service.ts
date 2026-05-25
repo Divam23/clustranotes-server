@@ -3,17 +3,11 @@ import Note from '../notes.model';
 
 type GetNoteListOptions = {
     query?: string;
-
     page: number;
-
     limit: number;
-
     subject?: string;
-
     semester?: number;
-
     category?: string;
-
     course?: string;
 };
 

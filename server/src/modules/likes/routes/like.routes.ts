@@ -9,3 +9,6 @@ const router = Router();
 router
     .route('/:targetType/:targetId')
     .post(verifyFirebaseToken, validate(toggleLikeSchema), toggleLikeController);
+
+
+export default router
