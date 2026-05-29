@@ -20,6 +20,9 @@ export const mapCommentResponse = ({
         updatedAt:comment.updatedAt,
         user:{
             id:user._id,
+            firebaseUid: user.firebaseUid,
+            firstName: user.firstName,
+            lastName:user.lastName,
             userName:user.userName,
             avatar:user.avatar?.url || "",
             verificationStatus:user.verificationStatus

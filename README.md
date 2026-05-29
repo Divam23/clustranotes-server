@@ -1,11 +1,11 @@
-# ClaustraNotes
+# ClustraNotes
 
-ClaustraNotes is a notes application for students. The project is organized as a monorepo with a TypeScript/Node.js backend, Firebase configuration, and a Flutter frontend.
+ClustraNotes is a notes application for students. The project is organized as a monorepo with a TypeScript/Node.js backend, Firebase configuration, and a Flutter frontend.
 
 ## Project Structure
 
 ```text
-ClaustraNotes/
+ClustraNotes/
 ├── client/              # Flutter application
 ├── firebase/            # Firebase project config, Firestore rules, storage rules, indexes
 ├── server/              # Node.js + TypeScript backend

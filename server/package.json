@@ -2,13 +2,13 @@
   "name": "server",
   "version": "1.0.0",
   "description": "a backend serving the notes app for students",
-  "homepage": "https://github.com/Divam23/NoteX#readme",
+  "homepage": "https://github.com/Divam23/ClustraNotes#readme",
   "bugs": {
-    "url": "https://github.com/Divam23/NoteX/issues"
+    "url": "https://github.com/Divam23/ClustraNotes/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Divam23/NoteX.git"
+    "url": "git+https://github.com/Divam23/ClustraNotes.git"
   },
   "license": "ISC",
   "author": "Divam",
