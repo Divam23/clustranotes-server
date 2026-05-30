@@ -5,19 +5,18 @@ import { ApiError } from '@/shared/utils/ApiError';
 import { ApiResponse } from '@/shared/utils/ApiResponse';
 import { EntityType } from '../constants/entityType.constant';
 
-export const toggleLikeController = asyncHandler(async (req: Request, res: Response) => {
+export const toggleCommentLikeController = asyncHandler(async (req: Request, res: Response) => {
     if (!req.user) {
         throw new ApiError(404, 'No user found');
     }
 
     const firebaseUid = req.user.uid;
-    const targetType = req.params.targetType as EntityType;
-    const targetId = req.params.targetId as string;
+    const commentId = req.params.commentId as string;
 
     const response = await toggleLike(
         firebaseUid,
-        targetType,
-        targetId
+        EntityType.Comment,
+        commentId
     );
 
     return res.status(200).json(

@@ -3,7 +3,7 @@ import Like from '../model/like.model';
 import Note from '@/modules/notes/notes.model';
 import { ApiError } from '@/shared/utils/ApiError';
 import { EntityType } from '../constants/entityType.constant';
-// import Comment from '@/modules/comments/models/comment.model';
+import Comment from '@/modules/comments/model/comment.model';
 
 export const toggleLike = async (firebaseUid: string, targetType: EntityType, targetId: string) => {
     const user = await User.findOne({
@@ -63,46 +63,46 @@ export const toggleLike = async (firebaseUid: string, targetType: EntityType, ta
         };
     }
 
-    //COMMENT FEATURE IS UNDER PROGRESS
 
-    // if (targetType === 'Comment') {
+    if (targetType === 'Comment') {
 
-    //     const comment =
-    //         await Comment.findById(
-    //             targetId
-    //         );
+        const comment =
+            await Comment.findById(
+                targetId
+            );
 
-    //     if (!comment) {
-    //         throw new ApiError(
-    //             404,
-    //             'Comment not found'
-    //         );
-    //     }
+        if (!comment) {
+            throw new ApiError(
+                404,
+                'Comment not found'
+            );
+        }
+        if(comment.moderation?.isDeleted) throw new ApiError(400, "Cannot like deleted")
 
-    //     const liked =
-    //         await toggleExistingLike();
+        const liked =
+            await toggleExistingLike();
 
-    //     const updatedComment =
-    //         await Comment.findByIdAndUpdate(
-    //             targetId,
-    //             {
-    //                 $inc: {
-    //                     'stats.likesCount':
-    //                         liked ? 1 : -1,
-    //                 },
-    //             },
-    //             {
-    //                 new: true,
-    //             }
-    //         ).lean();
+        const updatedComment =
+            await Comment.findByIdAndUpdate(
+                targetId,
+                {
+                    $inc: {
+                        'stats.likesCount':
+                            liked ? 1 : -1,
+                    },
+                },
+                {
+                    new: true,
+                }
+            ).lean();
 
-    //     return {
-    //         liked,
-    //         likesCount:
-    //             updatedComment?.stats
-    //                 ?.likesCount || 0,
-    //     };
-    // }
+        return {
+            liked,
+            likesCount:
+                updatedComment?.stats
+                    ?.likesCount || 0,
+        };
+    }
 
     throw new ApiError(400, 'Invalid target type');
 };

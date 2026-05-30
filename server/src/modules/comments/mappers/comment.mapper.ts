@@ -9,24 +9,24 @@ export const mapCommentResponse = ({
     
     return{
         id:comment._id,
-        content:comment.content,
+        content:comment.moderation?.isDeleted ? null : comment.content,
         parentComment:comment.parentComment,
         stats:{
             likesCount:comment.stats?.likesCount || 0,
             repliesCount:comment.stats?.repliesCount || 0,
         },
+        isDeleted:comment.moderation?.isDeleted ?? false,
         isEdited:comment.isEdited,
         createdAt:comment.createdAt,
         updatedAt:comment.updatedAt,
         user:{
             id:user._id,
-            firebaseUid: user.firebaseUid,
             firstName: user.firstName,
             lastName:user.lastName,
             userName:user.userName,
             avatar:user.avatar?.url || "",
             verificationStatus:user.verificationStatus
         },
-        isOwner
+        isOwner:comment.moderation?.isDeleted ? false : isOwner
     }
 }

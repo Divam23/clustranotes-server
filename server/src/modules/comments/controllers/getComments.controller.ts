@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { ApiResponse } from '@/shared/utils/ApiResponse';
 import { asyncHandler } from '@/shared/utils/asyncHandler';
-import { mapCommentResponse } from '../mappers/createComment.mapper';
+import { mapCommentResponse } from '../mappers/comment.mapper';
 import { getComments } from '../services/getComments.service';
 import { IUser } from '@/modules/users/types/user.types';
 import { IComment } from '../types/comment.types';

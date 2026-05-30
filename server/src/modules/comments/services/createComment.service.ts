@@ -2,10 +2,9 @@ import Comment from '../model/comment.model';
 import User from '@/modules/users/models/users.model';
 import Note from '@/modules/notes/notes.model';
 import { ApiError } from '@/shared/utils/ApiError';
-
 import { CreateCommentDto } from '../dto/createComment.dto';
 
-export const createComment = async ({
+export const createCommentOrReply = async ({
     firebaseUid,
     noteId,
     commentData,
@@ -25,7 +24,6 @@ export const createComment = async ({
     if (!note) {
         throw new ApiError(404, 'Note not found');
     }
-
     let parentCommentDoc = null;
 
     if (commentData.parentComment) {
@@ -34,9 +32,14 @@ export const createComment = async ({
         if (!parentCommentDoc) {
             throw new ApiError(404, 'Parent comment not found');
         }
-
         if (parentCommentDoc.note.toString() !== noteId) {
             throw new ApiError(400, 'Parent comment belongs to different note');
+        }
+        if (parentCommentDoc.parentComment !== null) {
+            throw new ApiError(400, 'Replies to replies are not allowed');
+        }
+        if (parentCommentDoc.moderation?.isDeleted) {
+            throw new ApiError(400, 'Cannot reply to deleted comment');
         }
     }
 
@@ -48,7 +51,17 @@ export const createComment = async ({
     });
 
     //populate user from comment
-    const populatedComment = await Comment.findById(comment._id).populate('user');
+    const populatedComment = await Comment.findById(comment._id).populate({
+        path: 'user',
+        select: [
+            'firebaseUid',
+            'firstName',
+            'lastName',
+            'userName',
+            'avatar',
+            'verificationStatus',
+        ].join(' '),
+    });
 
     const updatePromises: Promise<any>[] = [
         Note.findByIdAndUpdate(note._id, {
@@ -58,6 +71,7 @@ export const createComment = async ({
         }).exec(),
     ];
 
+    
     if (parentCommentDoc) {
         updatePromises.push(
             Comment.findByIdAndUpdate(parentCommentDoc._id, {
@@ -65,7 +79,6 @@ export const createComment = async ({
             }).exec()
         );
     }
-
     await Promise.all(updatePromises);
 
     return populatedComment;
