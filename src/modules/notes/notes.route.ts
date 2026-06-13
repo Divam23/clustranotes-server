@@ -17,22 +17,23 @@ import { createCommentSchema } from "../comments/validators/createComment.valida
 import { createCommentController } from "../comments/controllers/createComment.controller";
 import { objectIdValidationSchema } from "@/shared/validators/objectIdValidation.validator";
 import { toggleNoteLikeController } from "../likes/controllers/toggleNoteLike.controller";
+import { requireVerifiedEmail } from "@/shared/middlewares/requireVerifiedEmail.middleware";
 
 const router = Router();
 
 //PUBLIC ROUTES
 router.route("/feed").get(getNoteListController)
 //Comment route
-router.route("/:noteId/comments").get(validate(getCommentsSchema), getAllTopLevelCommentsController)
 
 //PRIVATE ROUTES
-router.route("/create").post(verifyFirebaseToken, noteUpload.single("file"), validate(createNoteSchema), uploadNote);
-router.route("/:noteId").get(verifyFirebaseToken, validate(getNoteIdSchema), getSingleNoteController)
-router.route("/delete/:noteId").delete(verifyFirebaseToken, validate(deleteNoteSchema), deleteSingleNoteController)
-router.route("/:noteId").patch(verifyFirebaseToken, validate(getNoteIdSchema), validate(updateNoteSchema), updateSingleNoteController)
+router.route("/:noteId/comments").get(verifyFirebaseToken, requireVerifiedEmail, validate(getCommentsSchema), getAllTopLevelCommentsController)
+router.route("/create").post(verifyFirebaseToken, requireVerifiedEmail, noteUpload.single("file"), validate(createNoteSchema), uploadNote);
+router.route("/:noteId").get(verifyFirebaseToken, requireVerifiedEmail, validate(getNoteIdSchema), getSingleNoteController)
+router.route("/delete/:noteId").delete(verifyFirebaseToken, requireVerifiedEmail, validate(deleteNoteSchema), deleteSingleNoteController)
+router.route("/:noteId").patch(verifyFirebaseToken, requireVerifiedEmail, validate(getNoteIdSchema), validate(updateNoteSchema), updateSingleNoteController)
 //Comment route
-router.route("/:noteId/comments").post(verifyFirebaseToken, validate(createCommentSchema), createCommentController);
-router.route('/:noteId/like').post(verifyFirebaseToken, validate(objectIdValidationSchema), toggleNoteLikeController)
+router.route("/:noteId/comments").post(verifyFirebaseToken, requireVerifiedEmail, validate(createCommentSchema), createCommentController);
+router.route('/:noteId/like').post(verifyFirebaseToken, requireVerifiedEmail, validate(objectIdValidationSchema), toggleNoteLikeController)
 
 
 export default router;

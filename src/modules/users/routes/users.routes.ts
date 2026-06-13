@@ -10,13 +10,14 @@ import {
 import { validate } from '@/shared/middlewares/validate.middleware';
 import { avatarUpload } from '@/shared/middlewares/uploadAvatar.middleware';
 import { getUsernameSchema } from '../validators/usernameSchema.validation';
+import { requireVerifiedEmail } from '@/shared/middlewares/requireVerifiedEmail.middleware';
 
 const router = Router();
 
 router.route('/').get(verifyFirebaseToken, getCurrentUserPersonalProfile);
 router.route('/:username').get(validate(getUsernameSchema),getCurrentUserPublicProfile);
 
-router.route("/").patch(verifyFirebaseToken, validate(userProfileUpdateValidationSchema), updateCurrentUserProfile)
-router.route("/avatar").patch(verifyFirebaseToken, avatarUpload.single("file"), updateUserProfileAvatar)
+router.route("/").patch(verifyFirebaseToken, requireVerifiedEmail, validate(userProfileUpdateValidationSchema), updateCurrentUserProfile)
+router.route("/avatar").patch(verifyFirebaseToken, requireVerifiedEmail, avatarUpload.single("file"), updateUserProfileAvatar)
 
 export default router

@@ -8,12 +8,13 @@ import { deleteCommentController } from '../controllers/deleteComment.controller
 import { updateCommentController } from '../controllers/updateComment.controller';
 import { deleteCommentSchema } from '../validators/deleteComment.validation';
 import { toggleCommentLikeController } from '@/modules/likes/controllers/toggleCommentLike.controller';
+import { requireVerifiedEmail } from '@/shared/middlewares/requireVerifiedEmail.middleware';
 
 const router = Router();
 
-router.route('/:commentId/replies').get(validate(getRepliesSchema), getRepliesOnCommentsController);
-router.route("/:commentId").patch(verifyFirebaseToken, validate(updateCommentSchema), updateCommentController);
-router.route("/:commentId").delete(verifyFirebaseToken, validate(deleteCommentSchema), deleteCommentController)
-router.route("/:commentId/like").post(verifyFirebaseToken, validate(deleteCommentSchema), toggleCommentLikeController)
+router.route('/:commentId/replies').get(verifyFirebaseToken, requireVerifiedEmail, validate(getRepliesSchema), getRepliesOnCommentsController);
+router.route("/:commentId").patch(verifyFirebaseToken, requireVerifiedEmail, validate(updateCommentSchema), updateCommentController);
+router.route("/:commentId").delete(verifyFirebaseToken, requireVerifiedEmail, validate(deleteCommentSchema), deleteCommentController)
+router.route("/:commentId/like").post(verifyFirebaseToken, requireVerifiedEmail, validate(deleteCommentSchema), toggleCommentLikeController)
 
 export default router;
