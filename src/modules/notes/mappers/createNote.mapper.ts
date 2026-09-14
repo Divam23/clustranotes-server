@@ -11,9 +11,7 @@ export const mapCreateNoteResponse = ({
         title: note.title,
         subject: note.subject,
         course: note.course,
-        file: {
-            size: note.file.size,
-        },
+        fileSize: note.file.size,
         isPublic: note.isPublic,
         publishedAt: note.publishedAt,
     };
