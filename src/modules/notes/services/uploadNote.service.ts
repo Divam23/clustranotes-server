@@ -61,7 +61,8 @@ export const createNote = async ({
 
         return note;
 
-    } catch (error) {
+    } 
+    catch (error) {
         console.log("Note Upload Error: ", error)
         if (path) {
             try {

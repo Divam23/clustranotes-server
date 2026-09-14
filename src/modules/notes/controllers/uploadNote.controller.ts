@@ -6,8 +6,6 @@ import { ApiError } from '@/shared/utils/ApiError';
 import { mapCreateNoteResponse } from '../mappers/createNote.mapper';
 
 export const uploadNote = asyncHandler(async (req: Request, res: Response) => {
-    console.log('UPLOAD CONTROLLER REACHED');
-
     console.log('REQ USER:', req.user);
     console.log('REQ FILE:', req.file);
     console.log('REQ BODY:', req.body);
@@ -25,12 +23,7 @@ export const uploadNote = asyncHandler(async (req: Request, res: Response) => {
         uploadedFile: req.file,
     });
 
-    const response = mapCreateNoteResponse({
-        note: note,
-        isLiked: false,
-        isBookmarked: false,
-        isOwner: true,
-    });
+    const response = mapCreateNoteResponse({note: note});
 
     return res.status(201).json(new ApiResponse(201, response, 'Note Uploaded Successfully'));
 });
