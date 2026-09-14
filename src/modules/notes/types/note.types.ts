@@ -27,7 +27,7 @@ export interface INote extends Document {
         storagePath:string;
         mimeType: string;
         size: number;
-        thumbnailUrl: string;
+        thumbnailUrl?: string;
         canDownload: boolean;
         pageCount: number;
         readingTime: number;

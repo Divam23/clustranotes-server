@@ -17,7 +17,6 @@ export const createNote = async ({
     noteData: CreateNoteDto;
     uploadedFile: Express.Multer.File;
 }) => {
-    console.log("REACHED UPLOAD SERVICE")
     const user = await User.findOne({
         firebaseUid,
     }).lean();
@@ -54,6 +53,11 @@ export const createNote = async ({
             contentType,
             uploader: user._id,
         }); 
+
+        await note.populate({
+            path: "uploader",
+            select: "_id firstName lastName userName avatar verificationStatus"
+        });
 
         return note;
 
