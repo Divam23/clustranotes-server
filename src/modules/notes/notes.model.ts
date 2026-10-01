@@ -89,7 +89,7 @@ const NoteSchema = new Schema<INote>(
         university: {
             type: String,
             trim: true,
-            minLength: 5,
+            minLength: 2,
             maxlength: 200,
         },
 

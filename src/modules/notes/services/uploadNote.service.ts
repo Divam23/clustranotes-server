@@ -7,6 +7,7 @@ import { generateNoteFilePath } from '@/infrastructure/storage/utils/filePathGen
 import firebaseStorageProvider from '@/infrastructure/storage/providers/firebase.provider';
 import { CreateNoteDto } from '../dto/createNote.dto';
 import { supportedThumbnailGenerationFormats } from '@/shared/helpers/supportedFileTypeForThumbnail';
+import mongoose from 'mongoose';
 
 export const createNote = async ({
     firebaseUid,
@@ -36,43 +37,66 @@ export const createNote = async ({
 
     const path = generateNoteFilePath(user._id.toString(), uploadedFile.originalname);
 
+    const session = await mongoose.startSession();
     try {
-        await firebaseStorageProvider.uploadFile(
-            uploadedFile.buffer,
-            path,
-            uploadedFile.mimetype
+        session.startTransaction();
+        await firebaseStorageProvider.uploadFile(uploadedFile.buffer, path, uploadedFile.mimetype);
+
+        const note = await Note.create(
+            {
+                ...noteData,
+                file: {
+                    storagePath: path,
+                    mimeType: uploadedFile.mimetype,
+                    size: uploadedFile.size,
+                },
+                contentType,
+                uploader: user._id,
+            },
+            
         );
 
-        const note = await Note.create({
-            ...noteData,
-            file: {
-                storagePath: path,
-                mimeType: uploadedFile.mimetype,
-                size: uploadedFile.size,
-            },
-            contentType,
-            uploader: user._id,
-        }); 
+        await note.save({session});
 
-        await note.populate({
-            path: "uploader",
-            select: "_id firstName lastName userName avatar verificationStatus"
-        });
+        await User.findByIdAndUpdate(
+            user._id,
+            {
+                $inc: { 'stats.notesUploadedCount': 1 },
+            },
+            { session }
+        );
+
+        await note.populate(
+            {   
+                path: 'uploader',
+                select: '_id firstName lastName userName avatar verificationStatus',
+            },
+        );
+        await note.save({session});
+
+        await session.commitTransaction();
 
         return note;
+    } catch (error) {
+        console.log('Note Upload Error: ', error);
+        try {
+            await session.abortTransaction();
+        } catch (abortError) {
+            console.error('Transaction abort failed:', abortError);
+        }
 
-    } 
-    catch (error) {
-        console.log("Note Upload Error: ", error)
         if (path) {
             try {
                 await firebaseStorageProvider.deleteFile(path);
             } catch (cleanupError) {
                 console.error('Rollback failed', cleanupError);
-                throw new ApiError(500, "Internal server error", [cleanupError])
+                throw cleanupError;
             }
         }
         console.log(error);
-        throw new ApiError(500, 'File Upload failed', [error]);
+        throw error;
+    }
+    finally{
+        session.endSession();
     }
 };

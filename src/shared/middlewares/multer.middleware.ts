@@ -13,7 +13,6 @@ const fileFilter = (
   file: Express.Multer.File,
   cb: FileFilterCallback
 ) => {
-  console.log("MULTER MIDDLEWARE REACHED")
   if (!getNoteContentType(file.mimetype)) {
     return cb(
       new Error("Unsupported file type")
