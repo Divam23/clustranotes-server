@@ -3,7 +3,6 @@ import { ApiError } from '@/shared/utils/ApiError';
 
 export const requireVerifiedEmail = async (req: Request, res: Response, next: NextFunction) => {
     console.log('EMAIL VERIFICATION MIDDLEWARE REACHED');
-    console.log(req?.firebaseUser);
     if (!req.firebaseUser?.email_verified) {
         console.log(req.firebaseUser?.email_verified)
         return next(new ApiError(403, 'Email verification required'));

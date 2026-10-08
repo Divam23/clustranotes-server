@@ -10,6 +10,7 @@ export const getUserUploadedNotesSchema = z.object({
         semester: z.coerce.number().optional(),
         category: z.enum(NOTE_CATEGORY_ENUM).optional(),
         course: z.string().optional(),
-        contentType: z.enum(NOTE_CONTENT_TYPE_ENUM).optional(),
+        noteContentType: z.enum(NOTE_CONTENT_TYPE_ENUM).optional(),
+
     }),
 });
