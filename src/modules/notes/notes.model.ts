@@ -353,7 +353,7 @@ NoteSchema.index({
 });
 
 NoteSchema.index({
-    publishStatus: 1,
+    notePublishStatus: 1,
     isPublic: 1,
 });
 

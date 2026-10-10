@@ -8,6 +8,7 @@ import firebaseStorageProvider from '@/infrastructure/storage/providers/firebase
 import { CreateNoteDto } from '../dto/createNote.dto';
 import { supportedThumbnailGenerationFormats } from '@/shared/helpers/supportedFileTypeForThumbnail';
 import mongoose from 'mongoose';
+import { NOTE_PUBLISH_STATUS_ENUM } from '../constants/noteStatus.constant';
 
 export const createNote = async ({
     firebaseUid,
@@ -42,21 +43,30 @@ export const createNote = async ({
         session.startTransaction();
         await firebaseStorageProvider.uploadFile(uploadedFile.buffer, path, uploadedFile.mimetype);
 
-        const note = await Note.create(
-            {
-                ...noteData,
-                file: {
-                    storagePath: path,
-                    mimeType: uploadedFile.mimetype,
-                    size: uploadedFile.size,
-                },
-                contentType,
-                uploader: user._id,
+        const note = await Note.create({
+            ...noteData,
+            file: {
+                storagePath: path,
+                mimeType: uploadedFile.mimetype,
+                size: uploadedFile.size,
             },
-            
+            contentType,
+            uploader: user._id,
+        });
+        await Note.findByIdAndUpdate(
+            note._id,
+            {
+                $set: {
+                    notePublishStatus: 'published',
+                },
+            },
+            {
+                returnDocument: 'after',
+                runValidators: true,
+            }
         );
 
-        await note.save({session});
+        await note.save({ session });
 
         await User.findByIdAndUpdate(
             user._id,
@@ -66,13 +76,11 @@ export const createNote = async ({
             { session }
         );
 
-        await note.populate(
-            {   
-                path: 'uploader',
-                select: '_id firstName lastName userName avatar verificationStatus',
-            },
-        );
-        await note.save({session});
+        await note.populate({
+            path: 'uploader',
+            select: '_id firstName lastName userName avatar verificationStatus',
+        });
+        await note.save({ session });
 
         await session.commitTransaction();
 
@@ -95,8 +103,7 @@ export const createNote = async ({
         }
         console.log(error);
         throw error;
-    }
-    finally{
+    } finally {
         session.endSession();
     }
 };
