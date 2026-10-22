@@ -68,7 +68,7 @@ export const getNoteStatusStats = async (userId: mongoose.Types.ObjectId) => {
                             {
                                 $and: [
                                     activeNote,
-                                    { eq: ['$notePublishStatus', 'draft'] },
+                                    { $eq: ['$notePublishStatus', 'draft'] },
                                 ],
                             },
                             1,
@@ -76,13 +76,13 @@ export const getNoteStatusStats = async (userId: mongoose.Types.ObjectId) => {
                         ],
                     },
                 },
+                
                 published: {
                     $sum: {
                         $cond: [
                             {
                                 $and: [
                                     activeNote,
-                                    {$ne:['$notePublishStatus', 'unverified']},
                                     { $eq: ['$notePublishStatus', 'published'] },
                                 ],
                             },
