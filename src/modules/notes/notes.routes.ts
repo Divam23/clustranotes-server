@@ -50,6 +50,18 @@ router
         validate(createNoteSchema),
         uploadNote
     );
+
+//User uploaded notes
+router
+    .route('/me')
+    .get(
+        verifyFirebaseToken,
+        resolveCurrentUser,
+        requireVerifiedEmail,
+        validate(getUserUploadedNotesSchema),
+        getUserUploadedNotesController
+    );
+    
 router
     .route('/:noteId')
     .get(
@@ -107,15 +119,6 @@ router
         downloadSingleNoteController
     );
 
-//User uploaded notes
-router
-    .route('/me')
-    .get(
-        verifyFirebaseToken,
-        resolveCurrentUser,
-        requireVerifiedEmail,
-        validate(getUserUploadedNotesSchema),
-        getUserUploadedNotesController
-    );
+
 
 export default router;

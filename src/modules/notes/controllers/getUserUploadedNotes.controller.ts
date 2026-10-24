@@ -1,8 +1,6 @@
 import { ApiResponse } from '@/shared/utils/ApiResponse';
 import { Request, Response } from 'express';
-import { getNoteList } from '../services/getListOfNotes.service';
 import { asyncHandler } from '@/shared/utils/asyncHandler';
-import { mapNoteListResponse } from '../mappers/getListOfNotes.mapper';
 import { NoteCategoryType } from '../constants/noteCategory.constant';
 import { NoteContentType } from '../constants/noteContentType.constant';
 import { getUserUploadedNotes } from '../services/getUserUploadedNotes.service';

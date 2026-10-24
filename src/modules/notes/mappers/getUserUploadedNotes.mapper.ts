@@ -21,7 +21,6 @@ export const mapUserUploadedNotes = ({
             isPublic: note.isPublic,
             noteContentType: note.contentType,
             file: {
-
                 canDownload: note.file.canDownload,
                 pageCount: note.file.pageCount,
                 thumbnailUrl: note.file.thumbnailUrl,

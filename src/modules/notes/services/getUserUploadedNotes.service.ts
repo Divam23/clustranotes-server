@@ -15,7 +15,7 @@ export const getUserUploadedNotes = async ({
     const user = await User.findOne({ firebaseUid }).lean();
 
     if (!user) {
-        throw new ApiError(404, 'User not found!!!');
+        throw new ApiError(400, 'Unauthorized Access');
     }
 
     const filters: QueryFilter<INote> = {
@@ -36,7 +36,23 @@ export const getUserUploadedNotes = async ({
 
     const notes = await Note.find(filters)
         .select(
-            `title subject category uploader stats file createdAt updatedAt isPublic notePublishStatus noteVerificationStatus publishedAt submittedForReviewAt approvedAt rejectedAt rejectionReason`
+            `title 
+            subject
+            category 
+            contentType 
+            uploader 
+            stats 
+            file 
+            createdAt 
+            updatedAt 
+            isPublic 
+            notePublishStatus 
+            noteVerificationStatus 
+            publishedAt 
+            submittedForReviewAt 
+            approvedAt 
+            rejectedAt 
+            rejectionReason`
         )
         .sort({ createdAt: -1 })
         .skip(skip)
