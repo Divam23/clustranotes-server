@@ -24,12 +24,22 @@ export const getUserUploadedNotes = async ({
 
     const skip = (options.page - 1) * options.limit;
 
-    if (options.category) {
-        filters.category = options.category;
+    const isDeletedFilter = { $ne: true };
+
+    if (options.notePublishStatus === 'removed') {
+        filters.notePublishStatus = 'removed';
+    } else if (options.notePublishStatus) {
+        filters.notePublishStatus = options.notePublishStatus;
+        filters['moderation.isDeleted'] = isDeletedFilter;
+    } else if (options.noteVerificationStatus) {
+        filters.notePublishStatus = {
+            $in: ['published', 'archived'],
+        };
+        filters['moderation.isDeleted'] = isDeletedFilter;
     }
 
-    if (options.noteContentType) {
-        filters.contentType = options.noteContentType;
+    if (options.noteVerificationStatus) {
+        filters.noteVerificationStatus = options.noteVerificationStatus;
     }
 
     const totalResults = await Note.countDocuments(filters);
@@ -54,7 +64,7 @@ export const getUserUploadedNotes = async ({
             rejectedAt 
             rejectionReason`
         )
-        .sort({ createdAt: -1 })
+        .sort({ createdAt: -1, _id: -1 })
         .skip(skip)
         .limit(options.limit)
         .lean();

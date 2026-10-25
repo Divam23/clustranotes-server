@@ -6,6 +6,7 @@ import { NoteContentType } from '../constants/noteContentType.constant';
 import { getUserUploadedNotes } from '../services/getUserUploadedNotes.service';
 import { ApiError } from '@/shared/utils/ApiError';
 import { mapUserUploadedNotes } from '../mappers/getUserUploadedNotes.mapper';
+import { NoteStatusType, NoteVerificationStatusType } from '../constants/noteStatus.constant';
 
 export const getUserUploadedNotesController = asyncHandler(async (req: Request, res: Response) => {
 
@@ -20,9 +21,10 @@ export const getUserUploadedNotesController = asyncHandler(async (req: Request, 
     const category = (req.query.category as NoteCategoryType) || undefined;
     const course = (req.query.course as string) || undefined;
     const noteContentType = req.query.noteContentType as NoteContentType;
-
+    const notePublishStatus = req.query.notePublishStatus as NoteStatusType;
+    const noteVerificationStatus = req.query.noteVerificationStatus as NoteVerificationStatusType;
     const firebaseUid = req.user.firebaseUid;
-    const options = { query, page, limit, subject, semester, category, course, noteContentType };
+    const options = { query, page, limit, subject, semester, category, course, noteContentType, notePublishStatus, noteVerificationStatus };
 
     const filteredNotes = await getUserUploadedNotes(
         {firebaseUid,

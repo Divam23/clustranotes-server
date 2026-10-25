@@ -1,5 +1,6 @@
 import { NoteCategoryType } from "../constants/noteCategory.constant";
 import { NoteContentType } from "../constants/noteContentType.constant";
+import { NoteStatusType, NoteVerificationStatusType } from "../constants/noteStatus.constant";
 
 export type GetNoteListOptions = {
     query?: string,
@@ -10,4 +11,6 @@ export type GetNoteListOptions = {
     category?: NoteCategoryType;
     course?: string;
     noteContentType?: NoteContentType;
+    notePublishStatus?: NoteStatusType;
+    noteVerificationStatus?: NoteVerificationStatusType;
 }
